@@ -1,10 +1,14 @@
+#! /bin/bash
 # BRIX
-# Concatenation d'un ensemble de fichiers vidéos en un seul
+# Concatenation d'un ensemble de fichiers vidéos ProRes en un seul
 
 # accéder au dossier en question
   ## poser la question de l'emplacement plutot
-  
-cd /Users/bricebarbier/Desktop/RVZ_WEAPON_PRORES/00_MEDIAS_TEST/
+
+# D'après Nejib  
+echo "Indiquer l'adresse du clip :"
+read ad
+cd $ad
 
 # vider le fichier temporaire medias.txt pour éviter l'addition des lignes, puis repérer les différents éléments
   ## trouver un moyen de nommer le fichier txt selon le clipname d'origine
