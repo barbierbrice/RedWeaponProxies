@@ -1,0 +1,19 @@
+# BRIX
+# Concatenation d'un ensemble de fichiers vidéos en un seul
+
+# accéder au dossier en question
+cd /Users/bricebarbier/Desktop/RVZ_WEAPON_PRORES/00_MEDIAS_TEST/
+
+# vider le fichier temporaire medias.txt pour éviter l'addition des lignes, puis repérer les différents éléments
+rm medias.txt
+for f in /Users/bricebarbier/Desktop/RVZ_WEAPON_PRORES/00_MEDIAS_TEST/*.mov; do echo "file '$f'" >> medias.txt; done
+
+# obtenir un timecode pour un fichier donné et l'enregistrer
+timecode=$(ffprobe -v error -select_streams v:0 -show_entries stream_tags=timecode -of default=noprint_wrappers=1:nokey=1 media_1.mov)
+
+# concatener les éléments listés dans le fichier medias.txt
+ffmpeg -f concat -i medias.txt -vcodec copy -acodec copy -timecode $timecode output1.mov
+
+#		  problèmes à régler :
+# - récurrence du processus sur un ensemble de medias
+# - trouver les médias automatiquement
