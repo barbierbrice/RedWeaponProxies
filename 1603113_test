@@ -1,5 +1,5 @@
 #! /bin/bash
-# BRIX
+# BRIX ; 20160313
 # RVZ // RED WEAPON PROXIES
 # Concatenation d'un ensemble de fichiers vidéos ProRes en un seul
 
@@ -36,5 +36,5 @@ ffmpeg -f concat -i $adProxies/$clipname.txt -vcodec copy -acodec copy -timecode
 open $adProxies
 
 #	    problèmes à régler :
-# - récurrence du processus sur un ensemble de medias
-# - trouver les médias automatiquement
+# - récurrence du processus sur l'ensemble des clips
+# - mettre à jour selon l'arborescence du Redmag
