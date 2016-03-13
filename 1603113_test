@@ -14,7 +14,7 @@ cd $ad
   ## trouver un moyen de nommer le fichier txt selon le clipname d'origine
 
 rm medias.txt
-for f in /Users/bricebarbier/Desktop/RVZ_WEAPON_PRORES/00_MEDIAS_TEST/*.mov; do echo "file '$f'" >> medias.txt; done
+for f in $ad/*.mov; do echo "file '$f'" >> medias.txt; done
 
 # obtenir un timecode pour un fichier donné et l'enregistrer
 timecode=$(ffprobe -v error -select_streams v:0 -show_entries stream_tags=timecode -of default=noprint_wrappers=1:nokey=1 media_1.mov)
