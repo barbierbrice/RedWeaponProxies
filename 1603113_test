@@ -3,8 +3,6 @@
 # Concatenation d'un ensemble de fichiers vidéos ProRes en un seul
 
 # accéder au dossier en question
-  ## poser la question de l'emplacement plutot
-
 # D'après Nejib  
 echo "Indiquer l'adresse du clip :"
 read ad
@@ -25,7 +23,7 @@ for f in $ad/*.mov; do echo "file '$f'" >> medias.txt; done
 timecode=$(ffprobe -v error -select_streams v:0 -show_entries stream_tags=timecode -of default=noprint_wrappers=1:nokey=1 media_1.mov)
 
 # concatener les éléments listés dans le fichier medias.txt
-ffmpeg -f concat -i medias.txt -vcodec copy -acodec copy -timecode $timecode output1.mov
+ffmpeg -f concat -i medias.txt -vcodec copy -acodec copy -timecode $timecode $clipname.mov
 
 #	    problèmes à régler :
 # - récurrence du processus sur un ensemble de medias
