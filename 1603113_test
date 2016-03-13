@@ -1,5 +1,6 @@
 #! /bin/bash
 # BRIX
+# RVZ // RED WEAPON PROXIES
 # Concatenation d'un ensemble de fichiers vidéos ProRes en un seul
 
 # accéder au dossier proxies
@@ -20,8 +21,8 @@ clipname=$(echo ${clipnames%%.*} | awk {'print $1'})
 # vider le fichier temporaire medias.txt pour éviter l'addition des lignes, puis repérer les différents éléments
   ## trouver un moyen de nommer le fichier txt selon le clipname d'origine
 
-rm medias.txt
-for f in $ad/*.mov; do echo "file '$f'" >> medias.txt; done
+rm $adProxies/$clipname_list.txt
+for f in $ad/*.mov; do echo "file '$f'" >> $adProxies/$clipname.txt; done
 
 # obtenir un timecode pour un fichier donné et l'enregistrer
 timecode=$(ffprobe -v error -select_streams v:0 -show_entries stream_tags=timecode -of default=noprint_wrappers=1:nokey=1 $clipname.mov)
@@ -30,10 +31,10 @@ timecode=$(ffprobe -v error -select_streams v:0 -show_entries stream_tags=timeco
 cd $adProxies
 
 # concatener les éléments listés dans le fichier medias.txt
-ffmpeg -f concat -i $ad/medias.txt -vcodec copy -acodec copy -timecode $timecode $clipname.mov
+ffmpeg -f concat -i $adProxies/$clipname.txt -vcodec copy -acodec copy -timecode $timecode $clipname.mov
 
-# effacer fichier temporaire
-rm $ad/medias.txt
+# ouvrir le dossier contenant les nouveaux médias
+open $adProxies
 
 #	    problèmes à régler :
 # - récurrence du processus sur un ensemble de medias
