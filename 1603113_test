@@ -2,16 +2,20 @@
 # BRIX
 # Concatenation d'un ensemble de fichiers vidéos ProRes en un seul
 
-# accéder au dossier en question
-# D'après Nejib  
-echo "Indiquer l'adresse du clip :"
+# accéder au dossier proxies
+echo "Où est le dossier Proxies?"
+read adProxies
+
+# accéder au dossier contenant le clip
+# d'après Nejib
+echo "Où se trouve le clip ?"
 read ad
 cd $ad
 
 # détermination du clipname parmi les éléments du dossier
-# clipname = nom du premier élément.mov présent dans le dossier ad
 clipnames=$(basename $ad/*.mov)
-clipname=$(echo ${clipnames} | awk {'print $1'})
+# déterminer le clipname final selon le premier élément de la liste et en éliminant l'extension
+clipname=$(echo ${clipnames%%.*} | awk {'print $1'})
 
 # vider le fichier temporaire medias.txt pour éviter l'addition des lignes, puis repérer les différents éléments
   ## trouver un moyen de nommer le fichier txt selon le clipname d'origine
@@ -22,10 +26,15 @@ for f in $ad/*.mov; do echo "file '$f'" >> medias.txt; done
 # obtenir un timecode pour un fichier donné et l'enregistrer
 timecode=$(ffprobe -v error -select_streams v:0 -show_entries stream_tags=timecode -of default=noprint_wrappers=1:nokey=1 media_1.mov)
 
+# atteindre le dossier Proxies
+cd $adProxies
+
 # concatener les éléments listés dans le fichier medias.txt
-ffmpeg -f concat -i medias.txt -vcodec copy -acodec copy -timecode $timecode $clipname.mov
+ffmpeg -f concat -i $ad/medias.txt -vcodec copy -acodec copy -timecode $timecode $clipname.mov
+
+# effacer fichier temporaire
+rm $ad/medias.txt
 
 #	    problèmes à régler :
 # - récurrence du processus sur un ensemble de medias
 # - trouver les médias automatiquement
-# - déterminer l'emplacement des sorties automatiquement
