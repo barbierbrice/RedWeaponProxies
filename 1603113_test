@@ -10,6 +10,11 @@ echo "Indiquer l'adresse du clip :"
 read ad
 cd $ad
 
+# détermination du clipname parmi les éléments du dossier
+# clipname = nom du premier élément.mov présent dans le dossier ad
+clipnames=$(basename $ad/*.mov)
+clipname=$(echo ${clipnames} | awk {'print $1'})
+
 # vider le fichier temporaire medias.txt pour éviter l'addition des lignes, puis repérer les différents éléments
   ## trouver un moyen de nommer le fichier txt selon le clipname d'origine
 
