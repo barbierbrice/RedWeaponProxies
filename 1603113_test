@@ -24,7 +24,7 @@ rm medias.txt
 for f in $ad/*.mov; do echo "file '$f'" >> medias.txt; done
 
 # obtenir un timecode pour un fichier donné et l'enregistrer
-timecode=$(ffprobe -v error -select_streams v:0 -show_entries stream_tags=timecode -of default=noprint_wrappers=1:nokey=1 media_1.mov)
+timecode=$(ffprobe -v error -select_streams v:0 -show_entries stream_tags=timecode -of default=noprint_wrappers=1:nokey=1 $clipname.mov)
 
 # atteindre le dossier Proxies
 cd $adProxies
