@@ -5,35 +5,35 @@
 
 # accéder au dossier proxies
 echo "Où est le dossier Proxies?"
-read adProxies
+read ProxiesPath
 
 # accéder au dossier contenant le clip
 # d'après Nejib
 echo "Où se trouve le clip ?"
-read ad
-cd $ad
+read ClipPath
+cd $ClipPath
 
 # détermination du clipname parmi les éléments du dossier
-clipnames=$(basename $ad/*.mov)
+clipnames=$(basename $ClipPath/*.mov)
 # déterminer le clipname final selon le premier élément de la liste et en éliminant l'extension
 clipname=$(echo ${clipnames%%.*} | awk {'print $1'})
 
 # vider le fichier temporaire medias.txt pour éviter l'addition des lignes, puis repérer les différents éléments
 
-rm $adProxies/$clipname_list.txt
-for f in $ad/*.mov; do echo "file '$f'" >> $adProxies/$clipname.txt; done
+rm $ProxiesPath/$clipname_list.txt
+for f in $ClipPath/*.mov; do echo "file '$f'" >> $ProxiesPath/$clipname.txt; done
 
 # obtenir un timecode pour un fichier donné et l'enregistrer
 timecode=$(ffprobe -v error -select_streams v:0 -show_entries stream_tags=timecode -of default=noprint_wrappers=1:nokey=1 $clipname.mov)
 
 # atteindre le dossier Proxies
-cd $adProxies
+cd $ProxiesPath
 
 # concatener les éléments listés dans le fichier medias.txt
-ffmpeg -f concat -i $adProxies/$clipname.txt -vcodec copy -acodec copy -timecode $timecode $clipname.mov
+ffmpeg -f concat -i $ProxiesPath/$clipname.txt -vcodec copy -acodec copy -timecode $timecode $clipname.mov
 
 # ouvrir le dossier contenant les nouveaux médias
-open $adProxies
+open $ProxiesPath
 
 #	    problèmes à régler :
 # - récurrence du processus sur l'ensemble des clips
