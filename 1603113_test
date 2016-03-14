@@ -17,6 +17,7 @@ cd $ClipPath
 clipnames=$(basename $ClipPath/*.mov)
 # déterminer le clipname final selon le premier élément de la liste et en éliminant l'extension
 clipname=$(echo ${clipnames%%.*} | awk {'print $1'})
+proxyname=$(echo $clipname | sed 's/.\{4\}$//g')
 
 # vider le fichier temporaire medias.txt pour éviter l'addition des lignes, puis repérer les différents éléments
 rm $ProxiesPath/$clipname.txt
@@ -24,13 +25,14 @@ for f in $ClipPath/*.mov; do echo "file '$f'" >> $ProxiesPath/$clipname.txt; don
 
 # obtenir un timecode pour un fichier donné et l'enregistrer
 timecode=$(mediainfo $ClipPath/$clipname.mov | grep 'Time code of first frame'| awk {'print $NF'})
+#timecode=$(ffprobe -v error -select_streams v:1 -show_entries stream_tags=timecode -of default=noprint_wrappers=1:nokey=1 $clipname.mov)
 echo "Time code of first frame : " $timecode
 
 # atteindre le dossier Proxies
 cd $ProxiesPath
 
 # concatener les éléments listés dans le fichier medias.txt
-ffmpeg -f concat -i $ProxiesPath/$clipname.txt -vcodec copy -acodec copy -timecode $timecode $clipname.mov
+ffmpeg -f concat -i $ProxiesPath/$clipname.txt -vcodec copy -acodec copy -timecode $timecode $proxyname.mov
 
 # ouvrir le dossier contenant les nouveaux médias
 open $ProxiesPath
