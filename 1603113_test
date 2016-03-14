@@ -8,7 +8,7 @@ echo "Où est le dossier Proxies?"
 read ProxiesPath
 
 # accéder au dossier contenant le clip
-# d'après Nejib
+# d'après Nejib Boubaker
 echo "Où se trouve le clip ?"
 read ClipPath
 cd $ClipPath
