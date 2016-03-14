@@ -40,3 +40,5 @@ open $ProxiesPath
 #	    problèmes à régler :
 # - récurrence du processus sur l'ensemble des clips
 # - mettre à jour selon l'arborescence du Redmag
+# - ajouter l'info de ReelName automatiquement
+# - trier les streams selon 0 = video ; 1 = audio ; 2 = data
