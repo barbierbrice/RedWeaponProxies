@@ -19,15 +19,11 @@ clipnames=$(basename $ClipPath/*.mov)
 clipname=$(echo ${clipnames%%.*} | awk {'print $1'})
 
 # vider le fichier temporaire medias.txt pour éviter l'addition des lignes, puis repérer les différents éléments
-
-
-
 rm $ProxiesPath/$clipname.txt
 for f in $ClipPath/*.mov; do echo "file '$f'" >> $ProxiesPath/$clipname.txt; done
 
 # obtenir un timecode pour un fichier donné et l'enregistrer
 timecode=$(mediainfo $ClipPath/$clipname.mov | grep 'Time code of first frame'| awk {'print $NF'})
-#timecode=$(ffprobe -v error -select_streams v:1 -show_entries stream_tags=timecode -of default=noprint_wrappers=1:nokey=1 $clipname.mov)
 echo "Time code of first frame : " $timecode
 
 # atteindre le dossier Proxies
