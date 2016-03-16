@@ -25,14 +25,27 @@ for f in $ClipPath/*.mov; do echo "file '$f'" >> $ProxiesPath/$clipname.txt; don
 
 # obtenir un timecode pour un fichier donné et l'enregistrer
 timecode=$(mediainfo $ClipPath/$clipname.mov | grep 'Time code of first frame'| awk {'print $NF'})
+
+# déterminer la longueur du clip
+for f in $ClipPath/*.mov;
+do 
+echo $f
+duration=$(ffprobe -select_streams 1 -show_entries streams:stream=nb_frames $f | grep 'nb_frames'| awk -F"=" '{print $NF}')
+duration2=$(($duration2 + duration))
+echo $duration2
+done
+echo "l'ensemble fait ="$duration2
+duration_ts=$(($duration2 -1))
+
 #timecode=$(ffprobe -v error -select_streams v:1 -show_entries stream_tags=timecode -of default=noprint_wrappers=1:nokey=1 $clipname.mov)
 echo "Time code of first frame : " $timecode
+echo "Duration : " $duration_ts
 
 # atteindre le dossier Proxies
 cd $ProxiesPath
 
 # concatener les éléments listés dans le fichier medias.txt
-ffmpeg -f concat -i $ProxiesPath/$clipname.txt -vcodec copy -acodec copy -timecode $timecode $proxyname.mov
+ffmpeg -f concat -i $ProxiesPath/$clipname.txt -vframes $duration_ts -vcodec copy -acodec copy -timecode $timecode $proxyname.mov
 
 # ouvrir le dossier contenant les nouveaux médias
 open $ProxiesPath
@@ -40,5 +53,3 @@ open $ProxiesPath
 #	    problèmes à régler :
 # - récurrence du processus sur l'ensemble des clips
 # - mettre à jour selon l'arborescence du Redmag
-# - ajouter l'info de ReelName automatiquement
-# - trier les streams selon 0 = video ; 1 = audio ; 2 = data
